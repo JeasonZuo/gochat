@@ -20,7 +20,7 @@ const docTemplate = `{
                 "summary": "测试连通性",
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "{\"code\":200,\"message\":\"Go chat\"}",
                         "schema": {
                             "type": "string"
                         }

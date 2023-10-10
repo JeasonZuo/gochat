@@ -5,7 +5,7 @@ paths:
     get:
       responses:
         "200":
-          description: OK
+          description: '{"code":200,"message":"Go chat"}'
           schema:
             type: string
       summary: 测试连通性

@@ -1,0 +1,12 @@
+info:
+  contact: {}
+paths:
+  /index:
+    get:
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: 测试连通性
+swagger: "2.0"

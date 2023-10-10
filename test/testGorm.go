@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"gochat/models"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -12,6 +13,10 @@ func main() {
 	if err != nil {
 		panic("failed to connect database")
 	}
+
+	db.AutoMigrate(&models.UsersModel{})
+
+	db.Create(&models.UsersModel{Identity: "10000", Name: "zjx", Password: "123"})
 
 	fmt.Println(db)
 }

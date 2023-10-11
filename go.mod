@@ -1,4 +1,4 @@
-module gochat
+module github.com/JeasonZuo/gochat
 
 go 1.20
 

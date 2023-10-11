@@ -1,16 +1,17 @@
 package routers
 
 import (
+	"github.com/JeasonZuo/gochat/docs"
+	v1 "github.com/JeasonZuo/gochat/routers/v1"
+	"github.com/JeasonZuo/gochat/service"
 	"github.com/gin-gonic/gin"
-	swaggerfiles "github.com/swaggo/files"
+	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
-	"gochat/docs"
-	"gochat/service"
+	"net/http"
 )
 
 func InitApiRouter() *gin.Engine {
 	r := gin.Default()
-	docs.SwaggerInfo.BasePath = "/api/v1"
 
 	apiV1 := r.Group("/api/v1")
 	{
@@ -18,10 +19,19 @@ func InitApiRouter() *gin.Engine {
 
 		userGroup := apiV1.Group("/user")
 		{
-			userGroup.GET("list", service.GetUserList)
+			userGroup.POST("/sign_up", v1.RegisterUser)
 		}
 	}
 
-	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
+	r.NoRoute(func(c *gin.Context) {
+		c.JSON(http.StatusNotFound, gin.H{
+			"code":    404,
+			"message": "route not found",
+			"data":    nil,
+		})
+	})
+
+	docs.SwaggerInfo.BasePath = "/api/v1"
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	return r
 }

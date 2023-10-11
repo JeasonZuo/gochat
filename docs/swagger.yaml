@@ -1,12 +1,50 @@
+definitions:
+  app.Response:
+    properties:
+      code:
+        type: integer
+      data: {}
+      msg:
+        type: string
+    type: object
 info:
   contact: {}
 paths:
-  /index:
-    get:
+  /user/sign_up:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 用户名
+        in: body
+        name: name
+        required: true
+        schema:
+          type: string
+      - description: 用户头像
+        in: body
+        name: avatar_url
+        required: true
+        schema:
+          type: string
+      - description: 密码
+        in: body
+        name: password
+        required: true
+        schema:
+          type: string
+      - description: 确认密码
+        in: body
+        name: confirm_password
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
       responses:
         "200":
-          description: '{"code":200,"message":"Go chat"}'
+          description: OK
           schema:
-            type: string
-      summary: 测试连通性
+            $ref: '#/definitions/app.Response'
+      summary: 注册新用户
 swagger: "2.0"

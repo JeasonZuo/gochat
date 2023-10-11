@@ -1,14 +1,17 @@
 package main
 
 import (
-	"gochat/routers"
-	"gochat/utils"
+	"github.com/JeasonZuo/gochat/models"
+	"github.com/JeasonZuo/gochat/routers"
+	"github.com/JeasonZuo/gochat/utils"
 )
 
-func main() {
+func init() {
 	utils.InitConfig()
-	utils.InitMysql()
+	models.Setup()
+}
 
+func main() {
 	router := routers.InitApiRouter()
-	router.Run()
+	router.Run(":8001")
 }

@@ -26,9 +26,23 @@ func InitApiRouter() *gin.Engine {
 
 		apiV1.Use(jwt.JWT())
 		{
-			apiV1.POST("/test", v1.UserLogin) //用户登录
+			//获取用户信息
+			//编辑用户信息
+			//添加好友
+			//同意好友请求
+			//获取好友列表
+			//删除好友
+			//创建群组
+			//编辑群信息
+			//加入群组
+			//拉好友进群
+			//退出群组
+			//解散群组
+			//获取群组列表
 		}
 	}
+
+	//上传文件
 
 	r.NoRoute(func(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{

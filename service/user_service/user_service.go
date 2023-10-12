@@ -2,7 +2,7 @@ package user_service
 
 import (
 	"github.com/JeasonZuo/gochat/models"
-	"github.com/JeasonZuo/gochat/utils"
+	"github.com/JeasonZuo/gochat/pkg/utils"
 	"golang.org/x/crypto/bcrypt"
 )
 

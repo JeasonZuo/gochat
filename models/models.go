@@ -1,7 +1,6 @@
 package models
 
 import (
-	"fmt"
 	"github.com/spf13/viper"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -15,7 +14,6 @@ var db *gorm.DB
 
 func Setup() {
 	dsn := viper.GetString("Mysql.Dsn")
-	fmt.Println(dsn)
 	newLogger := logger.New(
 		log.New(os.Stdout, "\r\n", log.LstdFlags),
 		logger.Config{

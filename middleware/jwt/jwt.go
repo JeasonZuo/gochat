@@ -1,7 +1,7 @@
 package jwt
 
 import (
-	"github.com/JeasonZuo/gochat/utils"
+	"github.com/JeasonZuo/gochat/pkg/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 	"net/http"

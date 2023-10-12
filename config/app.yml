@@ -4,3 +4,9 @@ JwtSecret: chat666
 #database
 Mysql:
   Dsn: "root:root@tcp(127.0.0.1:3306)/chat?charset=utf8mb4&parseTime=True&loc=Local"
+
+Redis:
+  Host: 127.0.0.1:6379
+  Password:
+  DefaultDB: 0
+  PoolSize: 10

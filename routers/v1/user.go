@@ -1,8 +1,8 @@
 package v1
 
 import (
+	"github.com/JeasonZuo/gochat/pkg/app"
 	"github.com/JeasonZuo/gochat/service/user_service"
-	"github.com/JeasonZuo/gochat/utils/app"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )

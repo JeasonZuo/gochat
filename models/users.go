@@ -24,19 +24,16 @@ func GetUserList() []*UserModel {
 
 func AddUser(data map[string]any) (uint, error) {
 	hash, err := bcrypt.GenerateFromPassword([]byte(data["password"].(string)), bcrypt.DefaultCost)
-
 	if err != nil {
 		return 0, err
 	}
 
 	passwordHashStr := string(hash)
-
 	userModel := UserModel{
 		Name:      data["name"].(string),
 		AvatarUrl: data["avatar_url"].(string),
 		Password:  passwordHashStr,
 	}
-
 	if err := db.Create(&userModel).Error; err != nil {
 		return 0, err
 	}

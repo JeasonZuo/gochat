@@ -18,7 +18,7 @@ func JWT() gin.HandlerFunc {
 			code = 10001
 			msg = "token is required"
 		} else {
-			_, err := utils.ParseToken(token)
+			claims, err := utils.ParseToken(token)
 			if err != nil {
 				switch err {
 				case jwt.ErrTokenExpired:
@@ -29,6 +29,7 @@ func JWT() gin.HandlerFunc {
 					msg = "token is invalid"
 				}
 			}
+			c.Set("loginUserId", claims.ID)
 		}
 
 		if code != 0 {

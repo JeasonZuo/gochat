@@ -26,6 +26,7 @@ func InitApiRouter() *gin.Engine {
 
 		apiV1.Use(jwt.JWT())
 		{
+			apiV1.POST("/test", v1.UserLogin) //用户登录
 		}
 	}
 

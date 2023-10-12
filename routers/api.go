@@ -2,6 +2,7 @@ package routers
 
 import (
 	"github.com/JeasonZuo/gochat/docs"
+	"github.com/JeasonZuo/gochat/middleware/jwt"
 	v1 "github.com/JeasonZuo/gochat/routers/v1"
 	"github.com/JeasonZuo/gochat/service"
 	"github.com/gin-gonic/gin"
@@ -19,7 +20,12 @@ func InitApiRouter() *gin.Engine {
 
 		userGroup := apiV1.Group("/user")
 		{
-			userGroup.POST("/sign_up", v1.RegisterUser)
+			userGroup.POST("/sign_up", v1.UserRegister) //用户注册
+			userGroup.POST("/sign_in", v1.UserLogin)    //用户登录
+		}
+
+		apiV1.Use(jwt.JWT())
+		{
 		}
 	}
 

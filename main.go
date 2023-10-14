@@ -6,6 +6,7 @@ import (
 	"github.com/JeasonZuo/gochat/pkg/gredis"
 	"github.com/JeasonZuo/gochat/pkg/utils"
 	"github.com/JeasonZuo/gochat/routers"
+	"github.com/JeasonZuo/gochat/service/ws_service"
 )
 
 func init() {
@@ -13,6 +14,7 @@ func init() {
 	models.Setup()
 	gredis.SetUp()
 	utils.Setup()
+	ws_service.SetUp()
 }
 
 func main() {

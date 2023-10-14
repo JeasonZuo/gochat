@@ -1,10 +1,12 @@
 package jwt
 
 import (
+	"fmt"
 	"github.com/JeasonZuo/gochat/pkg/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 	"net/http"
+	"strings"
 )
 
 // JWT is jwt middleware
@@ -13,7 +15,9 @@ func JWT() gin.HandlerFunc {
 		var code = 0
 		var msg = ""
 
-		token := c.Query("token")
+		token := c.Request.Header.Get("Authorization")
+		token = strings.TrimPrefix(token, "Bearer ")
+		fmt.Println(token)
 		if token == "" {
 			code = 10001
 			msg = "token is required"
@@ -28,8 +32,9 @@ func JWT() gin.HandlerFunc {
 					code = 10001
 					msg = "token is invalid"
 				}
+			} else {
+				c.Set("loginUserId", claims.ID)
 			}
-			c.Set("loginUserId", claims.ID)
 		}
 
 		if code != 0 {

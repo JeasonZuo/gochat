@@ -5,6 +5,7 @@ import (
 	"github.com/JeasonZuo/gochat/middleware/jwt"
 	v1 "github.com/JeasonZuo/gochat/routers/v1"
 	"github.com/JeasonZuo/gochat/service"
+	"github.com/JeasonZuo/gochat/service/ws_service"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -26,23 +27,15 @@ func InitApiRouter() *gin.Engine {
 
 		apiV1.Use(jwt.JWT())
 		{
+			apiV1.GET("/ws", ws_service.WebSocketHandler)
 			//获取用户信息
 			//编辑用户信息
 			//添加好友
 			//同意好友请求
 			//获取好友列表
 			//删除好友
-			//创建群组
-			//编辑群信息
-			//加入群组
-			//拉好友进群
-			//退出群组
-			//解散群组
-			//获取群组列表
 		}
 	}
-
-	//上传文件
 
 	r.NoRoute(func(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{
@@ -54,5 +47,6 @@ func InitApiRouter() *gin.Engine {
 
 	docs.SwaggerInfo.BasePath = "/api/v1"
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
 	return r
 }

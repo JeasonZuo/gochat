@@ -19,9 +19,9 @@ func GenerateToken(id uint, name string) (string, error) {
 		id,
 		name,
 		jwt.RegisteredClaims{
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(24 * time.Hour)), // 过期时间24小时
-			IssuedAt:  jwt.NewNumericDate(time.Now()),                     // 签发时间
-			NotBefore: jwt.NewNumericDate(time.Now()),                     // 生效时间
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(30 * 24 * time.Hour)), // 过期时间30天
+			IssuedAt:  jwt.NewNumericDate(time.Now()),                          // 签发时间
+			NotBefore: jwt.NewNumericDate(time.Now()),                          // 生效时间
 		},
 	}
 

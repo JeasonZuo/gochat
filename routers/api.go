@@ -27,7 +27,7 @@ func InitApiRouter() *gin.Engine {
 
 		apiV1.Use(jwt.JWT())
 		{
-			apiV1.GET("/ws", ws_service.WebSocketHandler)
+			//apiV1.GET("/ws", ws_service.WebSocketHandler)
 			//获取用户信息
 			//编辑用户信息
 			//添加好友
@@ -36,6 +36,8 @@ func InitApiRouter() *gin.Engine {
 			//删除好友
 		}
 	}
+
+	r.GET("/ws", ws_service.WebSocketHandler)
 
 	r.NoRoute(func(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{

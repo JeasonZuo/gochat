@@ -1,18 +1,20 @@
 package ws_service
 
 import (
+	"encoding/json"
 	"fmt"
+	"github.com/JeasonZuo/gochat/pkg/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 	"net/http"
 )
 
 type Client struct {
-	userId uint
 	conn   *websocket.Conn
+	userId uint
 }
 
-var clients = make(map[uint]*Client)
+var clientMap = make(map[uint]*Client)
 var broadcast = make(chan []byte)
 
 func SetUp() {
@@ -27,25 +29,15 @@ func WebSocketHandler(c *gin.Context) {
 			return true
 		},
 	}
-
 	conn, err := upgrader.Upgrade(c.Writer, c.Request, nil)
 	if err != nil {
 		panic(err)
 	}
 	defer conn.Close()
 
-	loginUserId := c.Value("loginUserId").(uint)
-	if loginUserId == 0 {
-		return
-	}
-
 	client := &Client{
-		userId: loginUserId,
-		conn:   conn,
+		conn: conn,
 	}
-	clients[loginUserId] = client
-
-	fmt.Println(clients)
 
 	go client.listen()
 
@@ -54,7 +46,8 @@ func WebSocketHandler(c *gin.Context) {
 
 func (c *Client) listen() {
 	defer func() {
-		delete(clients, c.userId)
+		delete(clientMap, c.userId)
+		fmt.Println(clientMap)
 		c.conn.Close()
 	}()
 
@@ -63,14 +56,45 @@ func (c *Client) listen() {
 		if err != nil {
 			return
 		}
-		broadcast <- p
+
+		data := make(map[string]any)
+		err = json.Unmarshal(p, &data)
+		if err != nil {
+			return
+		}
+
+		token, ok := data["jwtToken"].(string)
+		if ok {
+			if token == "" {
+				return
+			}
+
+			claims, err := utils.ParseToken(token)
+			if err != nil {
+				return
+			}
+
+			loginUserId := claims.ID
+			c.userId = loginUserId
+			clientMap[loginUserId] = c
+		} else {
+			return
+		}
+
+		fmt.Println(clientMap)
+
+		message, ok := data["message"].(string)
+		if ok {
+			p = []byte(message)
+			broadcast <- p
+		}
 	}
 }
 
 func handleMessages() {
 	for {
 		message := <-broadcast
-		for _, client := range clients {
+		for _, client := range clientMap {
 			err := client.conn.WriteMessage(websocket.TextMessage, message)
 			if err != nil {
 				return

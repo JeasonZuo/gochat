@@ -16,5 +16,10 @@ func main() {
 
 	db.AutoMigrate(&models.UserModel{})
 
+	err = db.AutoMigrate(&models.FriendModel{})
+	if err != nil {
+		panic("failed to init FriendModel")
+	}
+
 	fmt.Println(db)
 }

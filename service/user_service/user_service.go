@@ -13,7 +13,7 @@ type User struct {
 	Password  string
 }
 
-// 用户注册
+// RegisterUser 用户注册
 func (u *User) RegisterUser() (uint, error) {
 	user := map[string]any{
 		"id":         u.ID,
@@ -29,7 +29,7 @@ func (u *User) RegisterUser() (uint, error) {
 	return id, nil
 }
 
-// 用户登录
+// LoginUser 用户登录
 func (u *User) LoginUser() (string, error) {
 	//获取用户信息
 	user, err := models.GetUserById(u.ID)
@@ -49,4 +49,21 @@ func (u *User) LoginUser() (string, error) {
 		return "", err
 	}
 	return token, nil
+}
+
+// AddFriend 添加好友
+func (u *User) AddFriend(friendId uint) error {
+	err := models.AddFriend(u.ID, friendId)
+	if err != nil {
+		return err
+	}
+
+	//自动互相添加为好友
+	return models.AddFriend(friendId, u.ID)
+}
+
+// 获取好友列表
+func (u *User) GetFriendsList() ([]*models.FriendInfo, error) {
+	list := models.GetFriendsList(u.ID)
+	return list, nil
 }

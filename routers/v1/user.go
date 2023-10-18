@@ -18,8 +18,9 @@ type RegisterUserForm struct {
 
 // @BasePath /api/v1
 
+// UserRegister
+// @Tags 用户相关
 // @Summary 注册新用户
-// Tags 用户相关
 // @Accept json
 // @Produce json
 // @Param name body string true "用户名"
@@ -27,7 +28,7 @@ type RegisterUserForm struct {
 // @Param password body string true "密码"
 // @Param confirm_password body string true "确认密码"
 // @success 200 {object} app.Response
-// @Router /user/sign_up [post]
+// @Router /sign_up [post]
 func UserRegister(c *gin.Context) {
 	var (
 		appG = app.Gin{C: c}
@@ -61,14 +62,15 @@ type LoginForm struct {
 	Password string `json:"password" binding:"required,min=6,max=72"`
 }
 
+// UserLogin
+// @Tags 用户相关
 // @Summary 用户登陆
-// Tags 用户相关
 // @Accept json
 // @Produce json
 // @Param tt_number body int true "TT号"
 // @Param password body string true "密码"
 // @success 200 {object} app.Response
-// @Router /user/sign_in [post]
+// @Router /sign_in [post]
 func UserLogin(c *gin.Context) {
 	var (
 		appG = app.Gin{C: c}
@@ -94,4 +96,60 @@ func UserLogin(c *gin.Context) {
 	appG.Response(http.StatusOK, 10000, "ok", gin.H{
 		"token": token,
 	})
+}
+
+type AddFriendForm struct {
+	TTNumber uint `json:"tt_number" binding:"required"`
+}
+
+// AddFriend
+// @Tags 用户相关
+// @Summary 添加好友
+// @Accept json
+// @Produce json
+// @Param tt_number body int true "TT号"
+// @success 200 {object} app.Response
+// @Router /add_friend [post]
+func AddFriend(c *gin.Context) {
+	var (
+		appG = app.Gin{C: c}
+		form AddFriendForm
+	)
+
+	if err := c.ShouldBindJSON(&form); err != nil {
+		appG.Response(http.StatusBadRequest, 10001, err.Error(), nil)
+		return
+	}
+
+	loginUserId := c.GetUint("loginUserId")
+	if loginUserId == 0 {
+		appG.Response(http.StatusOK, 10002, "请登陆", nil)
+		return
+	}
+
+	userService := user_service.User{
+		ID: loginUserId,
+	}
+	err := userService.AddFriend(form.TTNumber - startTTNumber)
+	if err != nil {
+		appG.Response(http.StatusOK, 10002, err.Error(), nil)
+		return
+	}
+
+	appG.Response(http.StatusOK, 10000, "ok", nil)
+}
+
+func GetFriendList(c *gin.Context) {
+	var appG = app.Gin{C: c}
+	loginUserId := c.GetUint("loginUserId")
+
+	userService := user_service.User{
+		ID: loginUserId,
+	}
+	list, err := userService.GetFriendsList()
+	if err != nil {
+		appG.Response(http.StatusOK, 10002, err.Error(), nil)
+		return
+	}
+	appG.Response(http.StatusOK, 10000, "ok", list)
 }

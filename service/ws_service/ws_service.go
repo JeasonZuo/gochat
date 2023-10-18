@@ -71,6 +71,7 @@ func (c *Client) listen() {
 
 			claims, err := utils.ParseToken(token)
 			if err != nil {
+				fmt.Println(err)
 				return
 			}
 
@@ -81,9 +82,8 @@ func (c *Client) listen() {
 			return
 		}
 
-		fmt.Println(clientMap)
-
 		message, ok := data["message"].(string)
+		fmt.Println(data)
 		if ok {
 			p = []byte(message)
 			broadcast <- p

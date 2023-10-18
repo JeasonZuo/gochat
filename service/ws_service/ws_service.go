@@ -44,49 +44,53 @@ func WebSocketHandler(c *gin.Context) {
 	select {}
 }
 
-func (c *Client) listen() {
+type Message struct {
+	FromUserId uint   `json:"fromUserId"`
+	ToUserId   uint   `json:"toUserId"`
+	Content    string `json:"content"`
+	Token      string `json:"jwtToken"`
+}
+
+func (client *Client) listen() {
 	defer func() {
-		delete(clientMap, c.userId)
+		delete(clientMap, client.userId)
 		fmt.Println(clientMap)
-		c.conn.Close()
+		client.conn.Close()
 	}()
 
 	for {
-		_, p, err := c.conn.ReadMessage()
+		_, p, err := client.conn.ReadMessage()
 		if err != nil {
 			return
 		}
 
-		data := make(map[string]any)
-		err = json.Unmarshal(p, &data)
+		message := Message{}
+		err = json.Unmarshal(p, &message)
 		if err != nil {
 			return
 		}
 
-		token, ok := data["jwtToken"].(string)
-		if ok {
-			if token == "" {
-				return
-			}
-
-			claims, err := utils.ParseToken(token)
+		if message.Token != "" {
+			claims, err := utils.ParseToken(message.Token)
 			if err != nil {
 				fmt.Println(err)
 				return
 			}
-
 			loginUserId := claims.ID
-			c.userId = loginUserId
-			clientMap[loginUserId] = c
+			client.userId = loginUserId
+			clientMap[loginUserId] = client
+
+			if message.Content != "" && message.ToUserId != 0 {
+				toClient, ok := clientMap[message.ToUserId]
+				message.FromUserId = loginUserId
+				message.Token = ""
+				if ok {
+					json, _ := json.Marshal(message)
+					toClient.conn.WriteMessage(websocket.TextMessage, json)
+				}
+			}
 		} else {
 			return
-		}
-
-		message, ok := data["message"].(string)
-		fmt.Println(data)
-		if ok {
-			p = []byte(message)
-			broadcast <- p
 		}
 	}
 }

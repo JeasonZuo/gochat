@@ -153,3 +153,19 @@ func GetFriendList(c *gin.Context) {
 	}
 	appG.Response(http.StatusOK, 10000, "ok", list)
 }
+
+// GetUserInfo 获取用户信息
+func GetUserInfo(c *gin.Context) {
+	var appG = app.Gin{C: c}
+	loginUserId := c.GetUint("loginUserId")
+
+	userService := user_service.User{
+		ID: loginUserId,
+	}
+	userInfo, err := userService.GetUserInfo()
+	if err != nil {
+		appG.Response(http.StatusOK, 10002, err.Error(), nil)
+		return
+	}
+	appG.Response(http.StatusOK, 10000, "ok", userInfo)
+}

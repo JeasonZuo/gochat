@@ -61,12 +61,14 @@ func (client *Client) listen() {
 	for {
 		_, p, err := client.conn.ReadMessage()
 		if err != nil {
+			fmt.Println(err)
 			return
 		}
 
 		message := Message{}
 		err = json.Unmarshal(p, &message)
 		if err != nil {
+			fmt.Println(err)
 			return
 		}
 

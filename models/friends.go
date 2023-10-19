@@ -12,19 +12,13 @@ type FriendModel struct {
 	FriendUser   UserModel `gorm:"foreignKey:ID;references:friend_user_id"`
 }
 
-type FriendInfo struct {
-	Id        uint   `json:"id"`
-	Name      string `json:"name"`
-	AvatarUrl string `json:"avatar_url"`
-}
-
 func (f *FriendModel) TableName() string {
 	return "tb_friends"
 }
 
 // GetFriendsList 获取好友列表
-func GetFriendsList(userId uint) []*FriendInfo {
-	var friends []*FriendInfo
+func GetFriendsList(userId uint) []*UserInfo {
+	var friends []*UserInfo
 	db.Model(&FriendModel{}).Select("tb_users.id, tb_users.name, tb_users.avatar_url").
 		Joins("inner join tb_users on tb_friends.friend_user_id = tb_users.id").
 		Where("tb_friends.user_id = ?", userId).

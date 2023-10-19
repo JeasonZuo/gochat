@@ -51,6 +51,21 @@ func (u *User) LoginUser() (string, error) {
 	return token, nil
 }
 
+// GetUserInfo 获取用户信息
+func (u *User) GetUserInfo() (*models.UserInfo, error) {
+	userModel, err := models.GetUserById(u.ID)
+	if err != nil {
+		return nil, err
+	}
+
+	userInfo := &models.UserInfo{
+		Id:        userModel.ID,
+		Name:      userModel.Name,
+		AvatarUrl: userModel.AvatarUrl,
+	}
+	return userInfo, nil
+}
+
 // AddFriend 添加好友
 func (u *User) AddFriend(friendId uint) error {
 	err := models.AddFriend(u.ID, friendId)
@@ -63,7 +78,7 @@ func (u *User) AddFriend(friendId uint) error {
 }
 
 // 获取好友列表
-func (u *User) GetFriendsList() ([]*models.FriendInfo, error) {
+func (u *User) GetFriendsList() ([]*models.UserInfo, error) {
 	list := models.GetFriendsList(u.ID)
 	return list, nil
 }

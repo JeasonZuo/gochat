@@ -12,6 +12,12 @@ type UserModel struct {
 	Password  string `json:"password" gorm:"size:63"`
 }
 
+type UserInfo struct {
+	Id        uint   `json:"id"`
+	Name      string `json:"name"`
+	AvatarUrl string `json:"avatar_url"`
+}
+
 func (u *UserModel) TableName() string {
 	return "tb_users"
 }

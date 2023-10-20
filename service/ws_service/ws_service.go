@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/JeasonZuo/gochat/pkg/utils"
+	"github.com/JeasonZuo/gochat/service/message_service"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 	"net/http"
@@ -90,6 +91,18 @@ func (client *Client) listen() {
 					json, _ := json.Marshal(message)
 					toClient.conn.WriteMessage(websocket.TextMessage, json)
 				}
+
+				go func() {
+					messageService := message_service.Message{
+						FromUserId: message.FromUserId,
+						ToUserId:   message.ToUserId,
+						Content:    message.Content,
+					}
+					err2 := messageService.SaveMessage()
+					if err2 != nil {
+						fmt.Println(err2)
+					}
+				}()
 			}
 		} else {
 			return

@@ -13,7 +13,7 @@ type UserModel struct {
 }
 
 type UserInfo struct {
-	Id        uint   `json:"id"`
+	ID        uint   `json:"id"`
 	Name      string `json:"name"`
 	AvatarUrl string `json:"avatar_url"`
 }

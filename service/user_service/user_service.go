@@ -59,7 +59,7 @@ func (u *User) GetUserInfo() (*models.UserInfo, error) {
 	}
 
 	userInfo := &models.UserInfo{
-		Id:        userModel.ID,
+		ID:        userModel.ID,
 		Name:      userModel.Name,
 		AvatarUrl: userModel.AvatarUrl,
 	}

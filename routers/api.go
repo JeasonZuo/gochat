@@ -26,11 +26,12 @@ func InitApiRouter() *gin.Engine {
 		apiV1.Use(jwt.JWT())
 		{
 			apiV1.GET("/user_info", v1.GetUserInfo) //获取用户信息
-
 			//编辑用户信息
 			apiV1.POST("/add_friend", v1.AddFriend)         //添加好友
 			apiV1.GET("/get_friend_list", v1.GetFriendList) //获取好友列表
 			//删除好友
+
+			apiV1.GET("/get_message_list", v1.GetMessageList) //获取历史信息
 		}
 	}
 

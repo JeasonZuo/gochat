@@ -3,7 +3,6 @@ package main
 import (
 	"github.com/JeasonZuo/gochat/models"
 	"github.com/JeasonZuo/gochat/pkg/config"
-	"github.com/JeasonZuo/gochat/pkg/gredis"
 	"github.com/JeasonZuo/gochat/pkg/utils"
 	"github.com/JeasonZuo/gochat/routers"
 	"github.com/JeasonZuo/gochat/service/ws_service"
@@ -12,7 +11,7 @@ import (
 func init() {
 	config.Setup()
 	models.Setup()
-	gredis.SetUp()
+	//gredis.SetUp()
 	utils.Setup()
 	ws_service.SetUp()
 }

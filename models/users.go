@@ -22,12 +22,6 @@ func (u *UserModel) TableName() string {
 	return "tb_users"
 }
 
-func GetUserList() []*UserModel {
-	data := make([]*UserModel, 10)
-	db.Find(&data)
-	return data
-}
-
 func AddUser(data map[string]any) (uint, error) {
 	hash, err := bcrypt.GenerateFromPassword([]byte(data["password"].(string)), bcrypt.DefaultCost)
 	if err != nil {
@@ -45,6 +39,21 @@ func AddUser(data map[string]any) (uint, error) {
 	}
 
 	return userModel.ID, nil
+}
+
+func EditUser(data map[string]any) error {
+	userModel := UserModel{
+		Model: gorm.Model{
+			ID: data["id"].(uint),
+		},
+		Name:      data["name"].(string),
+		AvatarUrl: data["avatar_url"].(string),
+	}
+	if err := db.Select("Name", "AvatarUrl").Save(&userModel).Error; err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func GetUserById(id uint) (*UserModel, error) {

@@ -139,6 +139,43 @@ func AddFriend(c *gin.Context) {
 	appG.Response(http.StatusOK, 10000, "ok", nil)
 }
 
+type EditUserForm struct {
+	Name      string `json:"name" binding:"required"`
+	AvatarUrl string `json:"avatar_url" binding:"required"`
+}
+
+// 编辑用户信息
+func EditUser(c *gin.Context) {
+	var (
+		appG = app.Gin{C: c}
+		form EditUserForm
+	)
+
+	if err := c.ShouldBindJSON(&form); err != nil {
+		appG.Response(http.StatusBadRequest, 10001, err.Error(), nil)
+		return
+	}
+
+	loginUserId := c.GetUint("loginUserId")
+	if loginUserId == 0 {
+		appG.Response(http.StatusOK, 10002, "请登陆", nil)
+		return
+	}
+
+	userService := user_service.User{
+		ID:        loginUserId,
+		Name:      form.Name,
+		AvatarUrl: form.AvatarUrl,
+	}
+	err := userService.EditUserInfo()
+	if err != nil {
+		appG.Response(http.StatusOK, 10002, err.Error(), nil)
+		return
+	}
+
+	appG.Response(http.StatusOK, 10000, "ok", nil)
+}
+
 func GetFriendList(c *gin.Context) {
 	var appG = app.Gin{C: c}
 	loginUserId := c.GetUint("loginUserId")

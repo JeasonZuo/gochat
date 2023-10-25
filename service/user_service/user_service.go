@@ -31,7 +31,6 @@ func (u *User) RegisterUser() (uint, error) {
 
 // LoginUser 用户登录
 func (u *User) LoginUser() (string, error) {
-	//获取用户信息
 	user, err := models.GetUserById(u.ID)
 	if err != nil {
 		return "", err
@@ -43,7 +42,6 @@ func (u *User) LoginUser() (string, error) {
 		return "", err
 	}
 
-	//生成token
 	token, err := utils.GenerateToken(user.ID, user.Name)
 	if err != nil {
 		return "", err
@@ -64,6 +62,16 @@ func (u *User) GetUserInfo() (*models.UserInfo, error) {
 		AvatarUrl: userModel.AvatarUrl,
 	}
 	return userInfo, nil
+}
+
+// EditUserInfo 编辑用户信息
+func (u *User) EditUserInfo() error {
+	user := map[string]any{
+		"id":         u.ID,
+		"name":       u.Name,
+		"avatar_url": u.AvatarUrl,
+	}
+	return models.EditUser(user)
 }
 
 // AddFriend 添加好友

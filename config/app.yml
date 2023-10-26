@@ -1,9 +1,9 @@
 #app
-JwtSecret: chat666
+JwtSecret: ${JWT_SECRET}
 
 #database
 Mysql:
-  Dsn: "root:root@tcp(127.0.0.1:3306)/chat?charset=utf8mb4&parseTime=True&loc=Local"
+  Dsn: ${MYSQL_DSN}
 
 Redis:
   Host: 127.0.0.1:6379

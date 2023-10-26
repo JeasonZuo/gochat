@@ -18,9 +18,9 @@ type Client struct {
 var clientMap = make(map[uint]*Client)
 var broadcast = make(chan []byte)
 
-func SetUp() {
-	go handleMessages()
-}
+//func SetUp() {
+//	go handleMessages()
+//}
 
 func WebSocketHandler(c *gin.Context) {
 	upgrader := websocket.Upgrader{

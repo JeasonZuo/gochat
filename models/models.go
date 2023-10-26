@@ -33,4 +33,8 @@ func Setup() {
 	}
 
 	db = dbSession
+
+	db.AutoMigrate(&UserModel{})
+	db.AutoMigrate(&FriendModel{})
+	db.AutoMigrate(&MessageModel{})
 }

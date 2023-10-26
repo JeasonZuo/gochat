@@ -5,10 +5,11 @@ import (
 	"github.com/JeasonZuo/gochat/models"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"os"
 )
 
 func main() {
-	dsn := "root:root@tcp(127.0.0.1:3306)/chat?charset=utf8mb4&parseTime=True&loc=Local"
+	dsn := os.Getenv("MYSQL_DSN")
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")

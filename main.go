@@ -5,18 +5,22 @@ import (
 	"github.com/JeasonZuo/gochat/pkg/config"
 	"github.com/JeasonZuo/gochat/pkg/utils"
 	"github.com/JeasonZuo/gochat/routers"
-	"github.com/JeasonZuo/gochat/service/ws_service"
+	"github.com/joho/godotenv"
+	"log"
 )
 
 func init() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatalf("Error loading .env file: %v", err)
+	}
+
 	config.Setup()
 	models.Setup()
-	//gredis.SetUp()
 	utils.Setup()
-	ws_service.SetUp()
 }
 
 func main() {
 	router := routers.InitApiRouter()
-	router.Run(":8001")
+	router.Run(":8080")
 }

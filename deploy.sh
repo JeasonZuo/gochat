@@ -1,2 +1,2 @@
 #!/bin/sh
-docker-compose -p tt-chat-backend up -d
+docker compose -p tt-chat-backend up -d

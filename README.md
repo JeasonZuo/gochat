@@ -1,5 +1,5 @@
 # TT Chat
-一款由Go构建的聊天系统
+一款由 Go + Vue 构建的聊天系统
 
 ## 部署步骤
 1. 安装docker，参考 https://docs.docker.com/engine/install/

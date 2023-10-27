@@ -2,7 +2,6 @@ package main
 
 import (
 	"github.com/JeasonZuo/gochat/models"
-	"github.com/JeasonZuo/gochat/pkg/config"
 	"github.com/JeasonZuo/gochat/pkg/utils"
 	"github.com/JeasonZuo/gochat/routers"
 	"github.com/joho/godotenv"
@@ -15,7 +14,7 @@ func init() {
 		log.Fatalf("Error loading .env file: %v", err)
 	}
 
-	config.Setup()
+	//config.Setup()
 	models.Setup()
 	utils.Setup()
 }
